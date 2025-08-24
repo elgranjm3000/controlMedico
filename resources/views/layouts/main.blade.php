@@ -50,95 +50,7 @@
 </div>
 
 <!-- Main Application Content -->
-<div id="app" class="d-none">
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="brand-section">
-                <div class="brand-icon">
-                    <i class="fas fa-heartbeat"></i>
-                </div>
-                <h4 class="brand-text">ClinicaPro</h4>
-            </div>
-            
-            <!-- User Profile Card -->
-            <div class="user-profile-card">
-                <div class="user-avatar">
-                    <i class="fas fa-user-md"></i>
-                </div>
-                <div class="user-info">
-                    <h6 class="user-name">{{ auth()->user()->name }}</h6>
-                    <span class="user-role">{{ ucfirst(auth()->user()->role) }}</span>
-                </div>
-                <div class="status-indicator"></div>
-            </div>
-        </div> <!-- Cierre de sidebar-header -->
-
-        <!-- Navigation Menu -->
-        <nav class="sidebar-nav">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('dashboard') }}" data-section="dashboard">
-                        <i class="fas fa-chart-pie nav-icon"></i>
-                        <span>Dashboard</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('patients.index') }}" data-section="patients">
-                        <i class="fas fa-users nav-icon"></i>
-                        <span>Pacientes</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#appointments" data-section="appointments">
-                        <i class="fas fa-calendar-alt nav-icon"></i>
-                        <span>Agenda</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#invoices" data-section="invoices">
-                        <i class="fas fa-file-invoice-dollar nav-icon"></i>
-                        <span>Facturación</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#inventory" data-section="inventory">
-                        <i class="fas fa-boxes nav-icon"></i>
-                        <span>Inventario</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#expenses" data-section="expenses">
-                        <i class="fas fa-receipt nav-icon"></i>
-                        <span>Gastos</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#reports" data-section="reports">
-                        <i class="fas fa-chart-bar nav-icon"></i>
-                        <span>Reportes</span>
-                        <div class="nav-indicator"></div>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Logout Button -->
-        <div class="sidebar-footer">
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Cerrar Sesión</span>
-                </button>
-            </form>
-        </div>
-    </div> <!-- Cierre de sidebar -->
+<div id="app" class="d-none">  
     
     @yield('content')
 </div> <!-- Cierre de app -->
@@ -405,10 +317,12 @@
 
 
     <!-- Additional JavaScript -->
+    @stack('scripts')
 
         
     @show
 
+         @section('scripts')
 
 
          <script>
@@ -570,8 +484,6 @@ function editAppointment(appointmentId) {
 
 
 </script>
-
-    @stack('scripts')
 
 </body>
 </html>
