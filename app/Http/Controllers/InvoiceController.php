@@ -64,7 +64,7 @@ class InvoiceController extends Controller
         $paidAmount = $query->where('status', 'pagada')->sum('total');
         $pendingAmount = $query->where('status', 'pendiente')->sum('total');
         
-        return view('invoices.index', compact(
+        return view('modules.invoices.index', compact(
             'invoices', 
             'totalInvoices', 
             'totalAmount', 
@@ -109,7 +109,7 @@ class InvoiceController extends Controller
         $lastInvoice = Invoice::orderBy('created_at', 'desc')->first();
         $nextNumber = $this->generateInvoiceNumber($lastInvoice);
 
-        return view('invoices.create', compact(
+        return view('modules.invoices.form', compact(
             'patients', 
             'medicalServices', 
             'inventoryItems', 
@@ -256,7 +256,7 @@ class InvoiceController extends Controller
     {
         $invoice->load(['patient', 'appointment.doctor', 'items.service', 'items.inventoryItem', 'createdBy']);
         
-        return view('invoices.show', compact('invoice'));
+        return view('modules.invoices.show', compact('invoice'));
     }
 
     /**
@@ -284,7 +284,7 @@ class InvoiceController extends Controller
 
         $invoice->load(['items.service', 'items.inventoryItem']);
 
-        return view('invoices.edit', compact('invoice', 'patients', 'medicalServices', 'inventoryItems'));
+        return view('modules.invoices.form', compact('invoice', 'patients', 'medicalServices', 'inventoryItems'));
     }
 
     /**

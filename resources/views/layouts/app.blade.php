@@ -91,14 +91,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#appointments" data-section="appointments">
+                    <a class="nav-link" href="{{ route('appointments.index') }}" data-section="appointments">
                         <i class="fas fa-calendar-alt nav-icon"></i>
                         <span>Agenda</span>
                         <div class="nav-indicator"></div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#invoices" data-section="invoices">
+                    <a class="nav-link" href="{{ route('invoices.index') }}" data-section="invoices">
                         <i class="fas fa-file-invoice-dollar nav-icon"></i>
                         <span>Facturación</span>
                         <div class="nav-indicator"></div>

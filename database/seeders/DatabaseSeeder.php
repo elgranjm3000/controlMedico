@@ -22,14 +22,15 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            //DoctorSeeder::class,
-            //ConsultationRoomSeeder::class,
-            //PatientSeeder::class,
-            //MedicalServiceSeeder::class,
-            //InventoryItemSeeder::class,
-            //AppointmentSeeder::class,
-            //InvoiceSeeder::class,
-            //ExpenseSeeder::class,
+            PatientsTableSeeder::class,
+            DoctorsTableSeeder::class,
+            ConsultationRoomsTableSeeder::class,
+            MedicalServicesTableSeeder::class,
+            InventoryItemsTableSeeder::class,
+            AppointmentsTableSeeder::class,
+            InvoicesTableSeeder::class,
+            InvoiceItemsTableSeeder::class,
+            InventoryMovementsTableSeeder::class,
         ]);
     }
 }

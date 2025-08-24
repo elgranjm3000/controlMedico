@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
-@section('title', isset($patient) ? 'Editar Paciente' : 'Nuevo Paciente')
+@section('title', isset($doctor) ? 'Editar Doctor' : 'Nuevo Doctor')
 
 @section('content')
 <!-- Sidebar -->
-
 
 <!-- Main Content -->
 <div class="main-content">
@@ -14,15 +13,13 @@
             <button class="sidebar-toggle" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </button>
-            <h2 class="page-title">{{ isset($patient) ? 'Editar Paciente' : 'Nuevo Paciente' }}</h2>
+            <h2 class="page-title">{{ isset($doctor) ? 'Editar Doctor' : 'Nuevo Doctor' }}</h2>
         </div>
-        
         <div class="header-right">
             <div class="system-status">
                 <div class="status-dot"></div>
                 <span>Sistema Operativo</span>
             </div>
-            
             <div class="notification-bell">
                 <i class="fas fa-bell"></i>
                 <span class="notification-badge">3</span>
@@ -32,7 +29,6 @@
 
     <!-- Main Content Area -->
     <main class="dashboard-main">
-        
         <!-- Breadcrumb -->
         <div class="row mb-4">
             <div class="col-12">
@@ -42,15 +38,15 @@
                             <a href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('patients.index') }}">Pacientes</a>
+                            <a href="{{ route('doctors.index') }}">Doctores</a>
                         </li>
-                        @if(isset($patient))
+                        @if(isset($doctor))
                             <li class="breadcrumb-item">
-                                <a href="{{ route('patients.show', $patient) }}">{{ $patient->getFullNameAttribute() }}</a>
+                                <a href="{{ route('doctors.show', $doctor) }}">{{ $doctor->getFullNameAttribute() }}</a>
                             </li>
                             <li class="breadcrumb-item active">Editar</li>
                         @else
-                            <li class="breadcrumb-item active">Nuevo Paciente</li>
+                            <li class="breadcrumb-item active">Nuevo Doctor</li>
                         @endif
                     </ol>
                 </nav>
@@ -67,61 +63,58 @@
                     </div>
                     <div class="form-step">
                         <div class="form-step-number">2</div>
-                        <span>Contacto</span>
+                        <span>Información Profesional</span>
                     </div>
                     <div class="form-step">
                         <div class="form-step-number">3</div>
-                        <span>Información Médica</span>
+                        <span>Contacto</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Patient Form -->
+        <!-- Doctor Form -->
         <div class="row g-4">
             <div class="col-12">
                 <div class="dashboard-widget">
                     <div class="widget-header">
                         <div class="widget-title">
-                            <i class="fas fa-{{ isset($patient) ? 'user-edit' : 'user-plus' }} widget-icon"></i>
-                            <h5>{{ isset($patient) ? 'Editar Información del Paciente' : 'Información del Nuevo Paciente' }}</h5>
+                            <i class="fas fa-{{ isset($doctor) ? 'user-edit' : 'user-plus' }} widget-icon"></i>
+                            <h5>{{ isset($doctor) ? 'Editar Información del Doctor' : 'Información del Nuevo Doctor' }}</h5>
                             <span class="widget-subtitle">
-                                {{ isset($patient) ? 'Actualice los datos del paciente' : 'Complete todos los campos requeridos' }}
+                                {{ isset($doctor) ? 'Actualice los datos del doctor' : 'Complete todos los campos requeridos' }}
                             </span>
                         </div>
                         <div class="widget-actions">
-                            <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary btn-sm">
+                            <a href="{{ route('doctors.index') }}" class="btn btn-outline-secondary btn-sm">
                                 <i class="fas fa-arrow-left me-1"></i>
                                 Volver
                             </a>
-                            @if(isset($patient))
-                                <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-info btn-sm">
+                            @if(isset($doctor))
+                                <a href="{{ route('doctors.show', $doctor) }}" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-eye me-1"></i>
                                     Ver Detalles
                                 </a>
                             @endif
                         </div>
                     </div>
-                    
                     <div class="widget-body">
                         <form method="POST" 
-                              action="{{ isset($patient) ? route('patients.update', $patient) : route('patients.store') }}" 
+                              action="{{ isset($doctor) ? route('doctors.update', $doctor) : route('doctors.store') }}" 
                               data-loading 
-                              id="patientForm">
+                              id="doctorForm">
                             @csrf
-                            @if(isset($patient))
+                            @if(isset($doctor))
                                 @method('PUT')
                             @endif
-                            
+
                             <div class="row g-4">
-                                
                                 <!-- Step 1: Personal Information -->
                                 <div class="col-12 form-step-content" data-step="1">
                                     <div class="form-section">
                                         <div class="form-section-header">
                                             <h6><i class="fas fa-user me-2"></i>Información Personal</h6>
                                         </div>
-                                        
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -131,20 +124,19 @@
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                         <input type="text" 
-                                                               class="form-control @error('name') is-invalid @enderror" 
-                                                               id="name" 
-                                                               name="name" 
-                                                               value="{{ old('name', $patient->name ?? '') }}" 
-                                                               required
-                                                               placeholder="Ingrese el nombre"
-                                                               autocomplete="given-name">
+                                                            class="form-control @error('name') is-invalid @enderror" 
+                                                            id="name" 
+                                                            name="name" 
+                                                            value="{{ old('name', $doctor->name ?? '') }}" 
+                                                            required
+                                                            placeholder="Ingrese el nombre"
+                                                            autocomplete="given-name">
                                                     </div>
                                                     @error('name')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="last_name" class="form-label required">Apellidos</label>
@@ -153,89 +145,122 @@
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                         <input type="text" 
-                                                               class="form-control @error('last_name') is-invalid @enderror" 
-                                                               id="last_name" 
-                                                               name="last_name" 
-                                                               value="{{ old('last_name', $patient->last_name ?? '') }}" 
-                                                               required
-                                                               placeholder="Ingrese los apellidos"
-                                                               autocomplete="family-name">
+                                                            class="form-control @error('last_name') is-invalid @enderror" 
+                                                            id="last_name" 
+                                                            name="last_name" 
+                                                            value="{{ old('last_name', $doctor->last_name ?? '') }}" 
+                                                            required
+                                                            placeholder="Ingrese los apellidos"
+                                                            autocomplete="family-name">
                                                     </div>
                                                     @error('last_name')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
+                                        </div>
+                                        <div class="form-step-actions mt-4">
+                                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                                Siguiente: Información Profesional
+                                                <i class="fas fa-arrow-right ms-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Professional Information -->
+                                <div class="col-12 form-step-content d-none" data-step="2">
+                                    <div class="form-section">
+                                        <div class="form-section-header">
+                                            <h6><i class="fas fa-stethoscope me-2"></i>Información Profesional</h6>
+                                        </div>
+                                        <div class="row g-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="birth_date" class="form-label">Fecha de Nacimiento</label>
+                                                    <label for="specialty" class="form-label required">Especialidad</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text">
-                                                            <i class="fas fa-calendar"></i>
+                                                            <i class="fas fa-stethoscope"></i>
                                                         </span>
-                                                        <input type="date" 
-                                                               class="form-control @error('birth_date') is-invalid @enderror" 
-                                                               id="birth_date" 
-                                                               name="birth_date" 
-                                                               value="{{ old('birth_date', isset($patient) && $patient->birth_date ? $patient->birth_date->format('Y-m-d') : '') }}"
-                                                               max="{{ date('Y-m-d') }}"
-                                                               autocomplete="bday">
+                                                        <input type="text" 
+                                                            class="form-control @error('specialty') is-invalid @enderror" 
+                                                            id="specialty" 
+                                                            name="specialty" 
+                                                            value="{{ old('specialty', $doctor->specialty ?? '') }}" 
+                                                            required
+                                                            placeholder="Ej: Cardiología, Pediatría..."
+                                                            list="specialties-list">
                                                     </div>
-                                                    <div id="age-display" class="form-text"></div>
-                                                    @error('birth_date')
+                                                    <datalist id="specialties-list">
+                                                        <option value="Medicina General">
+                                                        <option value="Cardiología">
+                                                        <option value="Pediatría">
+                                                        <option value="Ginecología">
+                                                        <option value="Dermatología">
+                                                        <option value="Neurología">
+                                                        <option value="Ortopedia">
+                                                        <option value="Psiquiatría">
+                                                        <option value="Oftalmología">
+                                                        <option value="Otorrinolaringología">
+                                                    </datalist>
+                                                    @error('specialty')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="gender" class="form-label">Género</label>
-                                                    <select class="form-select @error('gender') is-invalid @enderror" 
-                                                            id="gender" 
-                                                            name="gender">
-                                                        <option value="">Seleccionar género</option>
-                                                        <option value="masculino" {{ old('gender', $patient->gender ?? '') == 'masculino' ? 'selected' : '' }}>
-                                                            Masculino
-                                                        </option>
-                                                        <option value="femenino" {{ old('gender', $patient->gender ?? '') == 'femenino' ? 'selected' : '' }}>
-                                                            Femenino
-                                                        </option>
-                                                        <option value="otro" {{ old('gender', $patient->gender ?? '') == 'otro' ? 'selected' : '' }}>
-                                                            Otro
-                                                        </option>
-                                                    </select>
-                                                    @error('gender')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="rfc_nit" class="form-label">RFC/NIT</label>
+                                                    <label for="license_number" class="form-label required">Número de Cédula</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text">
                                                             <i class="fas fa-id-card"></i>
                                                         </span>
                                                         <input type="text" 
-                                                               class="form-control @error('rfc_nit') is-invalid @enderror" 
-                                                               id="rfc_nit" 
-                                                               name="rfc_nit" 
-                                                               value="{{ old('rfc_nit', $patient->rfc_nit ?? '') }}"
-                                                               placeholder="RFC o NIT del paciente (opcional)"
-                                                               style="text-transform: uppercase;">
+                                                            class="form-control @error('license_number') is-invalid @enderror" 
+                                                            id="license_number" 
+                                                            name="license_number" 
+                                                            value="{{ old('license_number', $doctor->license_number ?? '') }}" 
+                                                            required
+                                                            placeholder="Número de cédula profesional">
                                                     </div>
-                                                    @error('rfc_nit')
+                                                    @error('license_number')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
+                                                    <div class="form-text">
+                                                        <i class="fas fa-info-circle me-1"></i>
+                                                        El número de cédula debe ser único para cada doctor
+                                                    </div>
                                                 </div>
                                             </div>
+                                            @if(isset($doctor))
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Estado del Doctor</label>
+                                                        <div class="form-switch">
+                                                            <input class="form-check-input" 
+                                                                type="checkbox" 
+                                                                role="switch" 
+                                                                id="is_active" 
+                                                                name="is_active" 
+                                                                value="1" 
+                                                                {{ old('is_active', $doctor->is_active) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="is_active">
+                                                                Doctor Activo
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-text">
+                                                            Los doctores inactivos no aparecerán disponibles para nuevas citas
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
-                                        
                                         <div class="form-step-actions mt-4">
-                                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(1)">
+                                                <i class="fas fa-arrow-left me-1"></i>
+                                                Anterior
+                                            </button>
+                                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
                                                 Siguiente: Contacto
                                                 <i class="fas fa-arrow-right ms-1"></i>
                                             </button>
@@ -243,13 +268,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Step 2: Contact Information -->
-                                <div class="col-12 form-step-content d-none" data-step="2">
+                                <!-- Step 3: Contact Information -->
+                                <div class="col-12 form-step-content d-none" data-step="3">
                                     <div class="form-section">
                                         <div class="form-section-header">
                                             <h6><i class="fas fa-phone me-2"></i>Información de Contacto</h6>
                                         </div>
-                                        
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -259,20 +283,19 @@
                                                             <i class="fas fa-phone"></i>
                                                         </span>
                                                         <input type="tel" 
-                                                               class="form-control @error('phone') is-invalid @enderror" 
-                                                               id="phone" 
-                                                               name="phone" 
-                                                               value="{{ old('phone', $patient->phone ?? '') }}" 
-                                                               required
-                                                               placeholder="Ej: 555-123-4567"
-                                                               autocomplete="tel">
+                                                            class="form-control @error('phone') is-invalid @enderror" 
+                                                            id="phone" 
+                                                            name="phone" 
+                                                            value="{{ old('phone', $doctor->phone ?? '') }}" 
+                                                            required
+                                                            placeholder="Ej: 555-123-4567"
+                                                            autocomplete="tel">
                                                     </div>
                                                     @error('phone')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="email" class="form-label">Correo Electrónico</label>
@@ -281,105 +304,23 @@
                                                             <i class="fas fa-envelope"></i>
                                                         </span>
                                                         <input type="email" 
-                                                               class="form-control @error('email') is-invalid @enderror" 
-                                                               id="email" 
-                                                               name="email" 
-                                                               value="{{ old('email', $patient->email ?? '') }}"
-                                                               placeholder="ejemplo@correo.com"
-                                                               autocomplete="email">
+                                                            class="form-control @error('email') is-invalid @enderror" 
+                                                            id="email" 
+                                                            name="email" 
+                                                            value="{{ old('email', $doctor->email ?? '') }}"
+                                                            placeholder="doctor@ejemplo.com"
+                                                            autocomplete="email">
                                                     </div>
                                                     @error('email')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="address" class="form-label">Dirección Completa</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-map-marker-alt"></i>
-                                                        </span>
-                                                        <textarea class="form-control @error('address') is-invalid @enderror" 
-                                                                  id="address" 
-                                                                  name="address" 
-                                                                  rows="3"
-                                                                  placeholder="Calle, número, colonia, ciudad, código postal..."
-                                                                  autocomplete="street-address">{{ old('address', $patient->address ?? '') }}</textarea>
-                                                    </div>
-                                                    @error('address')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-step-actions mt-4">
-                                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep(1)">
-                                                <i class="fas fa-arrow-left me-1"></i>
-                                                Anterior
-                                            </button>
-                                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
-                                                Siguiente: Información Médica
-                                                <i class="fas fa-arrow-right ms-1"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 3: Medical Information -->
-                                <div class="col-12 form-step-content d-none" data-step="3">
-                                    <div class="form-section">
-                                        <div class="form-section-header">
-                                            <h6><i class="fas fa-file-medical me-2"></i>Información Médica</h6>
-                                        </div>
-                                        
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="medical_notes" class="form-label">Notas Médicas</label>
-                                                    <textarea class="form-control @error('medical_notes') is-invalid @enderror" 
-                                                              id="medical_notes" 
-                                                              name="medical_notes" 
-                                                              rows="6"
-                                                              placeholder="Información médica relevante: alergias, condiciones preexistentes, medicamentos actuales, cirugías previas, etc.">{{ old('medical_notes', $patient->medical_notes ?? '') }}</textarea>
-                                                    @error('medical_notes')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
                                                     <div class="form-text">
                                                         <i class="fas fa-info-circle me-1"></i>
-                                                        Incluya información sobre alergias conocidas, condiciones médicas preexistentes, 
-                                                        medicamentos que toma actualmente, cirugías previas, y cualquier otra información 
-                                                        médica relevante que pueda ser importante para el tratamiento.
+                                                        El email es opcional pero recomendado para notificaciones
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                            @if(isset($patient))
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label">Estado del Paciente</label>
-                                                    <div class="form-switch">
-                                                        <input class="form-check-input" 
-                                                               type="checkbox" 
-                                                               role="switch" 
-                                                               id="is_active" 
-                                                               name="is_active" 
-                                                               value="1" 
-                                                               {{ old('is_active', $patient->is_active) ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="is_active">
-                                                            Paciente Activo
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-text">
-                                                        Los pacientes inactivos no aparecerán en las búsquedas principales
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
                                         </div>
-                                        
                                         <div class="form-step-actions mt-4">
                                             <button type="button" class="btn btn-outline-secondary" onclick="prevStep(2)">
                                                 <i class="fas fa-arrow-left me-1"></i>
@@ -387,7 +328,7 @@
                                             </button>
                                             <button type="submit" class="btn btn-success" id="submitBtn">
                                                 <i class="fas fa-save me-1"></i>
-                                                {{ isset($patient) ? 'Actualizar Paciente' : 'Crear Paciente' }}
+                                                {{ isset($doctor) ? 'Actualizar Doctor' : 'Crear Doctor' }}
                                             </button>
                                         </div>
                                     </div>
@@ -399,7 +340,7 @@
                                 <div class="col-12">
                                     <div class="form-summary">
                                         <div class="form-actions">
-                                            <a href="{{ route('patients.index') }}" class="btn btn-secondary">
+                                            <a href="{{ route('doctors.index') }}" class="btn btn-secondary">
                                                 <i class="fas fa-times me-1"></i>
                                                 Cancelar
                                             </a>
@@ -407,8 +348,8 @@
                                                 <i class="fas fa-undo me-1"></i>
                                                 Limpiar Formulario
                                             </button>
-                                            @if(isset($patient))
-                                                <a href="{{ route('appointments.create', ['patient_id' => $patient->id]) }}" 
+                                            @if(isset($doctor))
+                                                <a href="{{ route('appointments.create', ['doctor_id' => $doctor->id]) }}" 
                                                    class="btn btn-outline-primary">
                                                     <i class="fas fa-calendar-plus me-1"></i>
                                                     Programar Cita
@@ -423,24 +364,20 @@
                 </div>
             </div>
         </div>
-
     </main>
 </div>
-
 @endsection
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar functionality
-   
-    // Form validation and interactions
-    const form = document.getElementById('patientForm');
+    const form = document.getElementById('doctorForm');
     const nameInput = document.getElementById('name');
     const lastNameInput = document.getElementById('last_name');
     const phoneInput = document.getElementById('phone');
     const emailInput = document.getElementById('email');
-    const birthDateInput = document.getElementById('birth_date');
-    const rfcInput = document.getElementById('rfc_nit');
+    const licenseInput = document.getElementById('license_number');
+    const specialtyInput = document.getElementById('specialty');
 
     // Real-time validation for names (only letters and spaces)
     [nameInput, lastNameInput].forEach(input => {
@@ -473,44 +410,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // RFC/NIT formatting
-    if (rfcInput) {
-        rfcInput.addEventListener('input', function() {
+    // License number formatting (only alphanumeric)
+    if (licenseInput) {
+        licenseInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
             validateField(this);
         });
     }
 
-    // Birth date and age calculation
-    if (birthDateInput) {
-        birthDateInput.addEventListener('change', function() {
-            calculateAge();
+    // Specialty validation
+    if (specialtyInput) {
+        specialtyInput.addEventListener('input', function() {
             validateField(this);
         });
-        
-        // Calculate age on page load if date exists
-        if (birthDateInput.value) {
-            calculateAge();
-        }
-    }
-
-    function calculateAge() {
-        const birthDate = new Date(birthDateInput.value);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        
-        const ageDisplay = document.getElementById('age-display');
-        if (birthDateInput.value && age >= 0) {
-            ageDisplay.textContent = `Edad: ${age} años`;
-            ageDisplay.classList.add('text-primary');
-        } else {
-            ageDisplay.textContent = '';
-        }
     }
 
     function validateField(field) {
@@ -521,9 +433,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Skip validation for optional fields
         if (!field.hasAttribute('required') && !value) {
-            return;
+            return true;
         }
-        
+
         let isValid = true;
         
         switch (field.type) {
@@ -536,10 +448,16 @@ document.addEventListener('DOMContentLoaded', function() {
             default:
                 isValid = field.hasAttribute('required') ? value !== '' : true;
         }
-        
+
+        // Additional validation for license number (must be unique when editing)
+        if (field.name === 'license_number' && value && isValid) {
+            // This would typically be validated server-side
+            // For now, just check basic format
+            isValid = value.length >= 4;
+        }
+
         // Add validation class
         field.classList.add(isValid ? 'is-valid' : 'is-invalid');
-        
         return isValid;
     }
 
@@ -558,7 +476,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isFormValid) {
             e.preventDefault();
             showToast('Por favor complete todos los campos requeridos correctamente', 'error');
-            
             // Go to first step with errors
             const firstStepWithError = document.querySelector('.form-step-content .is-invalid')?.closest('.form-step-content');
             if (firstStepWithError) {
@@ -582,17 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 10000);
         }
     });
-
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-                sidebar.classList.remove('show');
-            }
-        }
-    });
 });
-
 
 // Step navigation functions
 function goToStep(stepNumber) {
@@ -648,11 +555,10 @@ function prevStep(stepNumber) {
 
 function resetForm() {
     if (confirm('¿Está seguro de que desea limpiar el formulario? Se perderán todos los datos ingresados.')) {
-        document.getElementById('patientForm').reset();
+        document.getElementById('doctorForm').reset();
         document.querySelectorAll('.form-control, .form-select').forEach(field => {
             field.classList.remove('is-valid', 'is-invalid');
         });
-        document.getElementById('age-display').textContent = '';
         goToStep(1);
         showToast('Formulario limpiado', 'info');
     }
@@ -662,7 +568,6 @@ function resetForm() {
 function showToast(message, type = 'info') {
     const toastContainer = document.getElementById('toastContainer') || createToastContainer();
     const toast = document.createElement('div');
-    
     const iconMap = {
         'success': 'check-circle',
         'error': 'times-circle',
@@ -681,7 +586,6 @@ function showToast(message, type = 'info') {
     
     toastContainer.appendChild(toast);
     
-    // Remove toast after delay
     setTimeout(() => {
         if (toast.parentNode) {
             toast.remove();
@@ -699,6 +603,3 @@ function createToastContainer() {
 }
 </script>
 @endpush
-
-
-

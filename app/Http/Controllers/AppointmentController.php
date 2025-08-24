@@ -66,7 +66,7 @@ class AppointmentController extends Controller
             ->orderBy('name')
             ->get();
         
-        return view('appointments.index', compact('appointments', 'doctors'));
+        return view('modules.appointments.index', compact('appointments', 'doctors'));
     }
 
     /**
@@ -92,7 +92,7 @@ class AppointmentController extends Controller
             $selectedPatient = Patient::find($request->patient_id);
         }
 
-        return view('appointments.create', compact('patients', 'doctors', 'consultationRooms', 'selectedPatient'));
+        return view('modules.appointments.form', compact('patients', 'doctors', 'consultationRooms', 'selectedPatient'));
     }
 
     /**
@@ -114,10 +114,11 @@ class AppointmentController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+    $durationMinutes = (int)$request->duration_minutes;
 
         // Check for conflicts
         $scheduledAt = Carbon::parse($request->scheduled_at);
-        $endTime = $scheduledAt->copy()->addMinutes($request->duration_minutes);
+        $endTime = $scheduledAt->copy()->addMinutes($durationMinutes);
         
         $conflicts = $this->checkForConflicts(
             $request->doctor_id,
@@ -154,7 +155,7 @@ class AppointmentController extends Controller
     {
         $appointment->load(['patient', 'doctor', 'consultationRoom', 'invoice']);
         
-        return view('appointments.show', compact('appointment'));
+        return view('modules.appointments.show', compact('appointment'));
     }
 
     /**
@@ -174,7 +175,7 @@ class AppointmentController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('appointments.edit', compact('appointment', 'patients', 'doctors', 'consultationRooms'));
+        return view('modules.appointments.form', compact('appointment', 'patients', 'doctors', 'consultationRooms'));
     }
 
     /**
@@ -201,7 +202,7 @@ class AppointmentController extends Controller
         // Only check conflicts if date/time changed and not completed/cancelled
         if (!in_array($request->status, ['completada', 'cancelada'])) {
             $scheduledAt = Carbon::parse($request->scheduled_at);
-            $endTime = $scheduledAt->copy()->addMinutes($request->duration_minutes);
+            $endTime = $scheduledAt->copy()->addMinutes((int)$request->duration_minutes);
             
             if ($appointment->scheduled_at != $scheduledAt || 
                 $appointment->doctor_id != $request->doctor_id ||
@@ -383,41 +384,54 @@ class AppointmentController extends Controller
     /**
      * Get available time slots for a doctor and room.
      */
-    public function getAvailableSlots(Request $request)
-    {
-        $doctorId = $request->get('doctor_id');
-        $roomId = $request->get('room_id');
-        $date = $request->get('date', today());
-        $duration = (int) $request->get('duration', 30);
+   public function getAvailableSlots(Request $request)
+{
+    // Validar y convertir a enteros explícitamente
+    $doctorId = $request->get('doctor_id');
+    $roomId = $request->get('room_id');
+    $date = $request->get('date', today()->format('Y-m-d'));
+    
+    // Asegurar que duration sea un entero
+    $duration = (int)$request->get('duration', 30);
+    $duration = max(15, min(480, $duration)); // Forzar entre 15-480 minutos
+    
+    $startHour = 8; // 8:00 AM
+    $endHour = 18; // 6:00 PM
+    $slotInterval = 30; // 30 minutes
+    
+    $availableSlots = [];
+    $occupiedSlots = [];
+    
+    // Validar que tengamos los parámetros requeridos
+    if (!$doctorId || !$roomId || !$date) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Parámetros incompletos'
+        ], 400);
+    }
+    
+    // Get existing appointments for the day
+    $appointments = Appointment::where(function($q) use ($doctorId, $roomId) {
+        $q->where('doctor_id', $doctorId)
+          ->orWhere('consultation_room_id', $roomId);
+    })
+    ->whereDate('scheduled_at', $date)
+    ->where('status', '!=', 'cancelada')
+    ->get();
+    
+    // Mark occupied time slots
+    foreach ($appointments as $appointment) {
+        $startTime = $appointment->scheduled_at;
+        $endTime = $startTime->copy()->addMinutes((int)$appointment->duration_minutes);
         
-        $startHour = 8; // 8:00 AM
-        $endHour = 18; // 6:00 PM
-        $slotInterval = 30; // 30 minutes
-        
-        $availableSlots = [];
-        $occupiedSlots = [];
-        
-        // Get existing appointments for the day
-        $appointments = Appointment::where(function($q) use ($doctorId, $roomId) {
-            $q->where('doctor_id', $doctorId)
-              ->orWhere('consultation_room_id', $roomId);
-        })
-        ->whereDate('scheduled_at', $date)
-        ->where('status', '!=', 'cancelada')
-        ->get();
-        
-        // Mark occupied time slots
-        foreach ($appointments as $appointment) {
-            $startTime = $appointment->scheduled_at;
-            $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes);
-            
-            $occupiedSlots[] = [
-                'start' => $startTime,
-                'end' => $endTime
-            ];
-        }
-        
-        // Generate available slots
+        $occupiedSlots[] = [
+            'start' => $startTime,
+            'end' => $endTime
+        ];
+    }
+    
+    // Generate available slots
+    try {
         $currentTime = Carbon::parse($date)->setHour($startHour)->setMinute(0);
         $dayEnd = Carbon::parse($date)->setHour($endHour)->setMinute(0);
         
@@ -453,5 +467,12 @@ class AppointmentController extends Controller
             'success' => true,
             'slots' => $availableSlots
         ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al generar horarios: ' . $e->getMessage()
+        ], 500);
     }
+}
 }
