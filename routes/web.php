@@ -6,7 +6,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\ConsultationRoomController;
 use App\Http\Controllers\MedicalServiceController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
@@ -43,11 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('api/appointments/calendar', [AppointmentController::class, 'getCalendarData'])->name('api.appointments.calendar');
     Route::get('api/appointments/available-slots', [AppointmentController::class, 'getAvailableSlots'])->name('api.appointments.available-slots');
     
-    // Consultation Rooms Management
-    //Route::resource('consultation-rooms', ConsultationRoomController::class);
-    //Route::patch('consultation-rooms/{consultationRoom}/activate', [ConsultationRoomController::class, 'activate'])->name('consultation-rooms.activate');
-    //Route::get('api/consultation-rooms/search', [ConsultationRoomController::class, 'search'])->name('api.consultation-rooms.search');
-    
+ 
     // Medical Services Management
     Route::resource('medical-services', MedicalServiceController::class);
     Route::patch('medical-services/{medicalService}/activate', [MedicalServiceController::class, 'activate'])->name('medical-services.activate');
