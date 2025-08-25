@@ -70,7 +70,7 @@ class ExpenseController extends Controller
             ->get()
             ->pluck('total', 'category');
         
-        return view('expenses.index', compact(
+        return view('modules.expenses.index', compact(
             'expenses', 
             'totalExpenses', 
             'monthlyExpenses', 
@@ -83,7 +83,7 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        return view('expenses.create');
+        return view('modules.expenses.form');
     }
 
     /**

@@ -105,14 +105,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#inventory" data-section="inventory">
+                    <a class="nav-link" href="{{ route('inventory.index') }}" data-section="inventory">
                         <i class="fas fa-boxes nav-icon"></i>
                         <span>Inventario</span>
                         <div class="nav-indicator"></div>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#expenses" data-section="expenses">
+                    <a class="nav-link" href="{{ route('expenses.index') }}" data-section="expenses">
                         <i class="fas fa-receipt nav-icon"></i>
                         <span>Gastos</span>
                         <div class="nav-indicator"></div>

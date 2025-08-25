@@ -12,6 +12,7 @@ use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\InventoryController;
 
 
 Route::get('/', function () {
@@ -43,9 +44,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('api/appointments/available-slots', [AppointmentController::class, 'getAvailableSlots'])->name('api.appointments.available-slots');
     
     // Consultation Rooms Management
-    Route::resource('consultation-rooms', ConsultationRoomController::class);
-    Route::patch('consultation-rooms/{consultationRoom}/activate', [ConsultationRoomController::class, 'activate'])->name('consultation-rooms.activate');
-    Route::get('api/consultation-rooms/search', [ConsultationRoomController::class, 'search'])->name('api.consultation-rooms.search');
+    //Route::resource('consultation-rooms', ConsultationRoomController::class);
+    //Route::patch('consultation-rooms/{consultationRoom}/activate', [ConsultationRoomController::class, 'activate'])->name('consultation-rooms.activate');
+    //Route::get('api/consultation-rooms/search', [ConsultationRoomController::class, 'search'])->name('api.consultation-rooms.search');
     
     // Medical Services Management
     Route::resource('medical-services', MedicalServiceController::class);
@@ -53,14 +54,42 @@ Route::middleware(['auth'])->group(function () {
     Route::get('api/medical-services/search', [MedicalServiceController::class, 'search'])->name('api.medical-services.search');
     
     // Inventory Items Management
-    Route::resource('inventory-items', InventoryItemController::class);
-    Route::patch('inventory-items/{inventoryItem}/activate', [InventoryItemController::class, 'activate'])->name('inventory-items.activate');
-    Route::get('api/inventory-items/search', [InventoryItemController::class, 'search'])->name('api.inventory-items.search');
-    Route::get('api/inventory-items/low-stock', [InventoryItemController::class, 'getLowStock'])->name('api.inventory-items.low-stock');
+      Route::resource('inventory', InventoryController::class)->names([
+        'index' => 'inventory.index',
+        'create' => 'inventory.create',
+        'store' => 'inventory.store',
+        'show' => 'inventory.show',
+        'edit' => 'inventory.edit',
+        'update' => 'inventory.update',
+        'destroy' => 'inventory.destroy'
+    ])->parameters(['inventory' => 'inventoryItem']);
+
+     Route::get('/inventory/lowStock', [InventoryController::class, 'lowStock'])
+             ->name('inventory.lowStock');
+        Route::prefix('inventory/{inventoryItem}')->name('inventory.')->group(function () {
+        // Agregar stock
+        Route::get('/add-stock', [InventoryController::class, 'showAddStock'])
+             ->name('showAddStock');
+       
+        Route::post('/add-stock', [InventoryController::class, 'addStock'])
+             ->name('addStock');
+        
+        // Remover stock
+        Route::get('/remove-stock', [InventoryController::class, 'showRemoveStock'])
+             ->name('showRemoveStock');
+        Route::post('/remove-stock', [InventoryController::class, 'removeStock'])
+             ->name('removeStock');
+        
+        // Ver movimientos específicos del producto
+        Route::get('/movements', [InventoryController::class, 'movements'])
+             ->name('movements');
+        
+        // Toggle status del producto
+        Route::patch('/toggle-status', [InventoryController::class, 'toggleStatus'])
+             ->name('toggleStatus');
+    });
     
     // Inventory Movements Management
-    Route::resource('inventory-movements', InventoryMovementController::class)->except(['edit', 'update']);
-    Route::get('inventory-items/{inventoryItem}/movements', [InventoryMovementController::class, 'itemMovements'])->name('inventory-movements.by-item');
     
     // Invoices Management
     Route::resource('invoices', InvoiceController::class);

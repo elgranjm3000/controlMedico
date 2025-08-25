@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta - Sistema de Gestión Clínica Médica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c5aa0, #1a365d);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+
+        .section h2 {
+            color: #2c5aa0;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e3f2fd;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 8px;
+            height: 30px;
+            background: #2c5aa0;
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        .section h3 {
+            color: #1a365d;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2c5aa0;
+            transition: transform 0.2s;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.15);
+        }
+
+        .tech-card h4 {
+            color: #2c5aa0;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .module-card h4 {
+            color: #2c5aa0;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .module-card h4::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #28a745;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .budget-table th,
+        .budget-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .budget-table th {
+            background: #2c5aa0;
+            color: white;
+            font-weight: 600;
+        }
+
+        .budget-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .budget-table .price {
+            font-weight: bold;
+            color: #28a745;
+            font-size: 1.1em;
+        }
+
+        .budget-table .total-row {
+            background: #e3f2fd;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .budget-table .total-row td {
+            border-bottom: none;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #2c5aa0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 20px 0 20px 70px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 21px;
+            top: 25px;
+            width: 18px;
+            height: 18px;
+            background: #2c5aa0;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px #2c5aa0;
+        }
+
+        .timeline-item h4 {
+            color: #2c5aa0;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item .duration {
+            background: #e3f2fd;
+            color: #2c5aa0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            color: #2c5aa0;
+            margin-bottom: 20px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .highlight-box h3 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 4px solid #28a745;
+        }
+
+        .benefit-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #2c5aa0;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @page {
+            margin: 1cm;
+            size: A4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>Sistema de Gestión Clínica Médica</h1>
+                <p class="subtitle">Solución Integral para Administración de Clínicas y Consultorios</p>
+                <p style="margin-top: 20px; font-size: 1.1em;">Propuesta Técnica y Comercial</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Resumen Ejecutivo -->
+            <div class="section">
+                <h2>📋 Resumen Ejecutivo</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px; text-align: justify;">
+                    Presentamos una solución integral de gestión para clínicas médicas desarrollada con <strong>Laravel 12</strong> 
+                    y tecnologías modernas. El sistema optimiza la administración de pacientes, citas médicas, facturación e inventario, 
+                    proporcionando una herramienta completa para mejorar la eficiencia operativa de su institución médica.
+                </p>
+                
+                <div class="highlight-box">
+                    <h3>$1,200 USD</h3>
+                    <p>Precio Total del Proyecto Completo</p>
+                    <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.9;">
+                        Incluye desarrollo completo, pruebas, documentación y soporte inicial
+                    </p>
+                </div>
+            </div>
+
+            <!-- Características Técnicas -->
+            <div class="section">
+                <h2>🔧 Características Técnicas</h2>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h4>Framework Backend</h4>
+                        <p><strong>Laravel 11</strong><br>Framework PHP robusto y seguro</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Base de Datos</h4>
+                        <p><strong>MySQL</strong><br>Gestión eficiente de datos médicos</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Frontend</h4>
+                        <p><strong>Bootstrap 5</strong><br>Interfaz responsive y moderna</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Autenticación</h4>
+                        <p><strong>Sistema de Roles</strong><br>Admin, Contador, Recepcionista</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulos del Sistema -->
+            <div class="section">
+                <h2>📚 Módulos del Sistema</h2>
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <h4>👥 Gestión de Pacientes</h4>
+                        <ul class="features-list">
+                            <li>Registro completo de pacientes</li>
+                            <li>Historial médico digitalizado</li>
+                            <li>Búsqueda y filtros avanzados</li>
+                            <li>Estados activo/inactivo</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>👨‍⚕️ Gestión de Doctores</h4>
+                        <ul class="features-list">
+                            <li>Perfiles médicos completos</li>
+                            <li>Especialidades y licencias</li>
+                            <li>Horarios y disponibilidad</li>
+                            <li>Estadísticas de consultas</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>📅 Sistema de Citas</h4>
+                        <ul class="features-list">
+                            <li>Calendario interactivo</li>
+                            <li>Prevención de conflictos</li>
+                            <li>Estados de citas en tiempo real</li>
+                            <li>Notificaciones automáticas</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>🧾 Facturación Electrónica</h4>
+                        <ul class="features-list">
+                            <li>Generación automática de facturas</li>
+                            <li>Cálculo de impuestos (IVA)</li>
+                            <li>Múltiples métodos de pago</li>
+                            <li>Reportes financieros</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>📦 Control de Inventario</h4>
+                        <ul class="features-list">
+                            <li>Gestión de medicamentos e insumos</li>
+                            <li>Alertas de stock bajo</li>
+                            <li>Movimientos de inventario</li>
+                            <li>Categorización automática</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>💰 Control de Gastos</h4>
+                        <ul class="features-list">
+                            <li>Registro de gastos por categorías</li>
+                            <li>Reportes de proveedores</li>
+                            <li>Análisis de costos</li>
+                            <li>Exportación de datos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funcionalidades Destacadas -->
+            <div class="section">
+                <h2>⭐ Funcionalidades Destacadas</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="icon">📊</div>
+                        <h4>Dashboard Ejecutivo</h4>
+                        <p>Métricas en tiempo real sobre ingresos, gastos y estadísticas operativas</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">🔒</div>
+                        <h4>Seguridad Avanzada</h4>
+                        <p>Sistema de roles y permisos para proteger información sensible</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">📱</div>
+                        <h4>Diseño Responsive</h4>
+                        <p>Acceso desde cualquier dispositivo: PC, tablet o móvil</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">⚡</div>
+                        <h4>Alto Rendimiento</h4>
+                        <p>Optimizado para manejar grandes volúmenes de datos médicos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Presupuesto -->
+            <div class="section">
+                <h2>💵 Presupuesto Detallado</h2>
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>Fase del Proyecto</th>
+                            <th>Descripción</th>
+                            <th>Duración</th>
+                            <th>Precio (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Fase 1: Infraestructura</strong></td>
+                            <td>Configuración Laravel, BD, autenticación</td>
+                            <td>2-3 días</td>
+                            <td class="price">$150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 2: Módulos Core</strong></td>
+                            <td>Pacientes, Doctores, Salas, Servicios</td>
+                            <td>4-5 días</td>
+                            <td class="price">$300</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 3: Sistema Citas</strong></td>
+                            <td>Calendario, validaciones, conflictos</td>
+                            <td>4-5 días</td>
+                            <td class="price">$300</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 4: Facturación</strong></td>
+                            <td>Facturas, items, cálculos, estados</td>
+                            <td>3-4 días</td>
+                            <td class="price">$250</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 5: Inventario</strong></td>
+                            <td>Stock, movimientos, alertas</td>
+                            <td>3 días</td>
+                            <td class="price">$150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 6: Reportes</strong></td>
+                            <td>Dashboard, gastos, exportaciones</td>
+                            <td>2 días</td>
+                            <td class="price">$100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fase 7: Testing</strong></td>
+                            <td>Pruebas, optimización, documentación</td>
+                            <td>2 días</td>
+                            <td class="price">$100</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>TOTAL PROYECTO</strong></td>
+                            <td class="price">$1,200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Cronograma -->
+            <div class="section">
+                <h2>📅 Cronograma de Entrega</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="duration">Días 1-3</div>
+                        <h4>Configuración Inicial</h4>
+                        <p>Setup del proyecto, base de datos y sistema de autenticación</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="duration">Días 4-8</div>
+                        <h4>Módulos Fundamentales</h4>
+                        <p>Desarrollo de gestión de pacientes, doctores y servicios médicos</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="duration">Días 9-13</div>
+                        <h4>Sistema de Citas</h4>
+                        <p>Calendario interactivo y gestión completa de citas médicas</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="duration">Días 14-17</div>
+                        <h4>Facturación</h4>
+                        <p>Sistema completo de facturación electrónica</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="duration">Días 18-20</div>
+                        <h4>Inventario y Reportes</h4>
+                        <p>Control de stock y sistema de reportes gerenciales</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="duration">Días 21-22</div>
+                        <h4>Testing y Entrega</h4>
+                        <p>Pruebas finales, optimización y entrega del sistema</p>
+                    </div>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;">
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">⏱️ Tiempo Total de Desarrollo</h4>
+                    <p style="font-size: 1.2em; font-weight: bold; color: #1a365d;">3-4 Semanas</p>
+                </div>
+            </div>
+
+            <!-- Beneficios -->
+            <div class="section">
+                <h2>🎯 Beneficios del Sistema</h2>
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <h4>💼 Eficiencia Operativa</h4>
+                        <ul class="features-list">
+                            <li>Reducción de tiempo administrativo</li>
+                            <li>Automatización de procesos</li>
+                            <li>Eliminación de errores manuales</li>
+                            <li>Mejor organización de información</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>💰 Control Financiero</h4>
+                        <ul class="features-list">
+                            <li>Facturación automática</li>
+                            <li>Control de gastos en tiempo real</li>
+                            <li>Reportes financieros detallados</li>
+                            <li>Análisis de rentabilidad</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>👥 Mejor Atención al Paciente</h4>
+                        <ul class="features-list">
+                            <li>Historial médico completo</li>
+                            <li>Citas organizadas</li>
+                            <li>Reducción de tiempos de espera</li>
+                            <li>Mejor seguimiento de tratamientos</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>📊 Toma de Decisiones</h4>
+                        <ul class="features-list">
+                            <li>Dashboard con métricas clave</li>
+                            <li>Reportes personalizables</li>
+                            <li>Análisis de tendencias</li>
+                            <li>Información en tiempo real</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incluye -->
+            <div class="section">
+                <h2>📦 El Precio Incluye</h2>
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <h4>💻 Desarrollo Completo</h4>
+                        <ul class="features-list">
+                            <li>Código fuente completo</li>
+                            <li>Todos los módulos descritos</li>
+                            <li>Base de datos optimizada</li>
+                            <li>Interfaz responsive</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>🔧 Servicios Técnicos</h4>
+                        <ul class="features-list">
+                            <li>Instalación en servidor</li>
+                            <li>Configuración inicial</li>
+                            <li>Pruebas exhaustivas</li>
+                            <li>Optimización de rendimiento</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>📚 Documentación</h4>
+                        <ul class="features-list">
+                            <li>Manual de usuario</li>
+                            <li>Guía de administración</li>
+                            <li>Documentación técnica</li>
+                            <li>Videos tutoriales básicos</li>
+                        </ul>
+                    </div>
+                    <div class="module-card">
+                        <h4>🛠️ Soporte Inicial</h4>
+                        <ul class="features-list">
+                            <li>30 días de soporte incluido</li>
+                            <li>Corrección de bugs</li>
+                            <li>Capacitación básica</li>
+                            <li>Actualizaciones menores</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Condiciones -->
+            <div class="section">
+                <h2>📋 Condiciones Comerciales</h2>
+                <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; border-left: 5px solid #2c5aa0;">
+                    <h3>💳 Forma de Pago</h3>
+                    <ul class="features-list">
+                        <li><strong>50% al iniciar el proyecto:</strong> $600 USD</li>
+                        <li><strong>50% al completar y entregar:</strong> $600 USD</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 25px;">🌎 Métodos de Pago Disponibles</h3>
+                    <ul class="features-list">                        
+                        <li><strong>Transferencia bancaria</strong> internacional</li>
+                        <li><strong>Zelle</strong> (USD)</li>
+                        <li><strong>Binance P2P</strong> (USDT)</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 25px;">⏰ Garantías</h3>
+                    <ul class="features-list">
+                        <li>Entrega garantizada en 3-4 semanas</li>
+                        <li>30 días de soporte post-entrega</li>
+                        <li>Garantía de funcionamiento</li>
+                        <li>Revisiones ilimitadas durante desarrollo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="contact-info">
+                <h3>📞 Información de Contacto</h3>
+                <p>¿Listo para modernizar su clínica médica?</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <h4>📧 Email</h4>
+                        <p>contacto@desarrollador.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>💬 WhatsApp</h4>
+                        <p>+58 4242399671</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>⏰ Horarios</h4>
+                        <p>Lunes a Viernes<br>8:00 AM - 6:00 PM</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>🌍 Ubicación</h4>
+                        <p>Venezuela<br>Servicio Remoto</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #28a745, #20c997); border-radius: 10px; color: white;">
+                    <h4 style="margin-bottom: 15px;">🚀 ¡Comencemos Hoy Mismo!</h4>
+                    <p>Esta propuesta tiene validez por 15 días. Contacte ahora para comenzar el desarrollo de su sistema de gestión médica.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>

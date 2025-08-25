@@ -3326,3 +3326,62 @@ body {
         width: 90vw;
     }
 }
+
+.pagination-controls {
+  margin-top: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Texto de resumen */
+.pagination-controls p {
+  color: #4B5563; /* gray-700 */
+  font-size: 14px;
+}
+
+/* Botones de paginación */
+.pagination-controls a,
+.pagination-controls span {
+  transition: all 0.2s ease-in-out;
+  padding: 8px 12px;
+  margin: 0 2px;
+  border-radius: 6px;
+  border: 1px solid #D1D5DB; /* gray-300 */
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* Botón activo */
+.pagination-controls span[aria-current="page"] {
+  background-color: #2563EB; /* blue-600 */
+  color: white;
+  border-color: #2563EB;
+}
+
+/* Botones hover */
+.pagination-controls a:hover {
+  background-color: #EFF6FF; /* blue-50 */
+  color: #1D4ED8; /* blue-700 */
+  border-color: #93C5FD; /* blue-300 */
+}
+
+/* Botones deshabilitados */
+.pagination-controls span[aria-disabled="true"] {
+  color: #9CA3AF; /* gray-400 */
+  background-color: #F9FAFB; /* gray-50 */
+  cursor: not-allowed;
+}
+
+/* Iconos SVG */
+.pagination-controls svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Responsive: ocultar en pantallas pequeñas */
+@media (max-width: 640px) {
+  .pagination-controls .sm\\:flex {
+    display: none;
+  }
+}
